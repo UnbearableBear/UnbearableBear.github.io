@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Mon coeur</title>
+    <style>
+      html {
+        height: 100%;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: rgba(0,0,0, 0.90);
+      }
+      body {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 6vh;
+        color: #fafafa;
+      }
+      #jetaime {
+        position: absolute;
+        top: 0;
+        margin-top: 5vh;
+        z-index: 1;
+      }
+      #intensite {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 5vh;
+      }
+      #coeur {
+        width: 5vh;
+        fill: rgba(244, 66, 89, 1);
+        cursor: pointer;
+        transition-property: width;
+        transition-timing-function: ease-out;
+      }
+      .pulse {
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+        animation: pulse 2s ease-out infinite;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="jetaime">Je t'aime...</div>
+    <svg id="coeur" class="pulse" viewBox="0 0 32 29.6">
+      <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+      c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+    </svg>
+    <span id="intensite">
+    </span>
+    <script>
+      // La langue française a son charme, que j'essaye d'utiliser du mieux que je peux ici
+      const coeur = document.getElementById('coeur')
+      let  intensite = document.getElementById('intensite').firstChild
+      let currentTimeout
+      const possibilites = [
+        { label: 'pas du tout :(', nom: 'pasdutout'},
+        { label: 'un peu...', nom: 'unpeu'},
+        { label: 'beaucoup', nom: 'beaucoup'},
+        { label: 'passionnément :D', nom: 'passionement'},
+        { label: 'à la folie !!!', nom: 'alafolie'},
+      ]
+      function destinee() {
+        return Math.round(Math.random() * (possibilites.length - 1))
+      }
+      coeur.addEventListener('pointerup', () => {
+
+        window.clearTimeout(currentTimeout)
+        coeur.style.transitionDuration = '0s'
+        coeur.style.width = '5vh'
+        intensite.nodeValue = ''
+
+        window.setTimeout(() => {
+          let destin = destinee()
+          destin = destin < 2 ? destinee() : destin // C'est entre toi et moi ;)
+          coeur.style.transitionDuration = destin + 's'
+          coeur.style.width = (5 + destin * 11) + 'vh'
+          currentTimeout = window.setTimeout(() => {
+            intensite.nodeValue = possibilites[destin].label
+          }, destin * 1000)
+        }, 0)
+
+      }, false)
+    </script>
+  </body>
+</html>
