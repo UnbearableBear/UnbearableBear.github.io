@@ -43,12 +43,11 @@
         transition-property: width;
         transition-timing-function: ease-out;
         filter: drop-shadow(0 0 20px rgba(244, 66, 89, 0.8));
-        animation: pulse 2s ease-out infinite;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
         -webkit-tap-highlight-color: transparent;
       }
-      #coeur:focus {
-        outline: none;
+      .pulse {
+        animation: pulse 2s ease-out infinite;
       }
 
       @keyframes pulse {
@@ -70,7 +69,7 @@
       const coeur = document.getElementById('coeur')
       const  intensite = document.getElementById('intensite')
       let currentTimeout
-      const possibilites = [
+      const intensites = [
         'pas du tout :(',
         'un peu...',
         'beaucoup',
@@ -78,11 +77,12 @@
         'à la folie !'
       ]
       function destinee() {
-        return Math.round(Math.random() * (possibilites.length - 1))
+        return Math.round(Math.random() * (intensites.length - 1))
       }
       coeur.addEventListener('click', () => {
 
         window.clearTimeout(currentTimeout)
+        coeur.classList.remove('pulse')
         coeur.style.transitionDuration = '0s'
         coeur.style.width = '5vh'
         intensite.innerHTML = ''
@@ -93,7 +93,8 @@
           coeur.style.transitionDuration = prophetie + 's'
           coeur.style.width = (5 + prophetie * 11) + 'vh'
           currentTimeout = window.setTimeout(() => {
-            intensite.innerHTML = possibilites[prophetie]
+            intensite.innerHTML = intensites[prophetie]
+            coeur.classList.add('pulse')
           }, prophetie * 1000)
         }, 100) // on laisse un peu le temps au coeur de se remettre de ses émotions
 
