@@ -3,13 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title>Mon coeur</title>
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
     <style>
       html {
         height: 100%;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: 'Indie Flower', cursive;
         background-color: rgba(0,0,0, 0.90);
       }
       body {
+        margin: 0;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -21,14 +23,18 @@
       }
       #jetaime {
         position: absolute;
-        top: 0;
-        margin-top: 5vh;
         z-index: 1;
+        top: 0;
+        width: 100%;
+        text-align: center;
+        margin-top: 5vh;
       }
       #intensite {
         position: absolute;
         bottom: 0;
+        width: 100%;
         margin-bottom: 5vh;
+        text-align: center;
       }
       #coeur {
         width: 5vh;
@@ -36,10 +42,13 @@
         cursor: pointer;
         transition-property: width;
         transition-timing-function: ease-out;
-      }
-      .pulse {
-        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+        filter: drop-shadow(0 0 20px rgba(244, 66, 89, 0.8));
         animation: pulse 2s ease-out infinite;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: transparent;
+      }
+      #coeur:focus {
+        outline: none;
       }
 
       @keyframes pulse {
@@ -51,43 +60,42 @@
   </head>
   <body>
     <div id="jetaime">Je t'aime...</div>
-    <svg id="coeur" class="pulse" viewBox="0 0 32 29.6">
+    <svg id="coeur" viewBox="0 0 32 29.6">
       <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
       c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
     </svg>
-    <span id="intensite">
-    </span>
+    <div id="intensite"></div>
     <script>
-      // La langue française a son charme, que j'essaye d'utiliser du mieux que je peux ici
+      // On ne va pa se priver du charme de la langue française quand même ?
       const coeur = document.getElementById('coeur')
-      let  intensite = document.getElementById('intensite').firstChild
+      const  intensite = document.getElementById('intensite')
       let currentTimeout
       const possibilites = [
-        { label: 'pas du tout :(', nom: 'pasdutout'},
-        { label: 'un peu...', nom: 'unpeu'},
-        { label: 'beaucoup', nom: 'beaucoup'},
-        { label: 'passionnément :D', nom: 'passionement'},
-        { label: 'à la folie !!!', nom: 'alafolie'},
+        'pas du tout :(',
+        'un peu...',
+        'beaucoup',
+        'passionnément !',
+        'à la folie !'
       ]
       function destinee() {
         return Math.round(Math.random() * (possibilites.length - 1))
       }
-      coeur.addEventListener('pointerup', () => {
+      coeur.addEventListener('click', () => {
 
         window.clearTimeout(currentTimeout)
         coeur.style.transitionDuration = '0s'
         coeur.style.width = '5vh'
-        intensite.nodeValue = ''
+        intensite.innerHTML = ''
 
         window.setTimeout(() => {
-          let destin = destinee()
-          destin = destin < 2 ? destinee() : destin // C'est entre toi et moi ;)
-          coeur.style.transitionDuration = destin + 's'
-          coeur.style.width = (5 + destin * 11) + 'vh'
+          let prophetie = destinee()
+          prophetie = prophetie < 2 ? destinee() : prophetie // C'est entre toi et moi ;)
+          coeur.style.transitionDuration = prophetie + 's'
+          coeur.style.width = (5 + prophetie * 11) + 'vh'
           currentTimeout = window.setTimeout(() => {
-            intensite.nodeValue = possibilites[destin].label
-          }, destin * 1000)
-        }, 0)
+            intensite.innerHTML = possibilites[prophetie]
+          }, prophetie * 1000)
+        }, 100) // on laisse un peu le temps au coeur de se remettre de ses émotions
 
       }, false)
     </script>
