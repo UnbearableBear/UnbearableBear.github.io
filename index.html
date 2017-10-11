@@ -67,7 +67,8 @@
     <script>
       // On ne va pa se priver du charme de la langue française quand même ?
       const coeur = document.getElementById('coeur')
-      const  intensite = document.getElementById('intensite')
+      // Je l'appelle entensiteEL à cause d'un putain de bug de ***** sur ***** de navigateur de ***** qu'est safari
+      const  intensiteEl = document.getElementById('intensite')
       let currentTimeout
       const intensites = [
         'pas du tout :(',
@@ -85,7 +86,7 @@
         coeur.classList.remove('pulse')
         coeur.style.transitionDuration = '0s'
         coeur.style.width = '5vh'
-        intensite.innerHTML = ''
+        intensiteEl.innerHTML = ''
 
         window.setTimeout(() => {
           let prophetie = destinee()
@@ -93,7 +94,7 @@
           coeur.style.transitionDuration = prophetie + 's'
           coeur.style.width = (5 + prophetie * 11) + 'vh'
           currentTimeout = window.setTimeout(() => {
-            intensite.innerHTML = intensites[prophetie]
+            intensiteEl.innerHTML = intensites[prophetie]
             coeur.classList.add('pulse')
           }, prophetie * 1000)
         }, 100) // on laisse un peu le temps au coeur de se remettre de ses émotions
